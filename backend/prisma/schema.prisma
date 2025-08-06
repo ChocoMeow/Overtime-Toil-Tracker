@@ -1,0 +1,128 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          String   @id @default(cuid())
+  email       String   @unique
+  password    String
+  name        String
+  role        String   @default("EMPLOYEE")
+  department  String?
+  joinDate    DateTime @default(now())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  leaveRequests    LeaveRequest[]
+  overtimeEntries  OvertimeEntry[]
+  toilEntries      TOILEntry[]
+  leaveBalances    LeaveBalance[]
+  managedUsers     User[] @relation("ManagerEmployee")
+  managerId        String?
+  manager          User?  @relation("ManagerEmployee", fields: [managerId], references: [id])
+
+  @@map("users")
+}
+
+model LeaveType {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  description String?
+  color       String   @default("#3B82F6")
+  maxDays     Int?
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  leaveRequests LeaveRequest[]
+  leaveBalances LeaveBalance[]
+
+  @@map("leave_types")
+}
+
+model LeaveRequest {
+  id           String   @id @default(cuid())
+  userId       String
+  leaveTypeId  String
+  startDate    DateTime
+  endDate      DateTime
+  status       String   @default("PENDING")
+  reason       String?
+  approvedBy   String?
+  approvedAt   DateTime?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  // Relations
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  leaveType LeaveType @relation(fields: [leaveTypeId], references: [id])
+
+  @@map("leave_requests")
+}
+
+model OvertimeEntry {
+  id          String   @id @default(cuid())
+  userId      String
+  date        DateTime
+  hours       Float
+  description String?
+  status      String   @default("PENDING")
+  category    String   @default("REGULAR")
+  approvedBy  String?
+  approvedAt  DateTime?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("overtime_entries")
+}
+
+model TOILEntry {
+  id         String   @id @default(cuid())
+  userId     String
+  earnedDate DateTime
+  hours      Float
+  expiryDate DateTime?
+  status     String   @default("ACTIVE")
+  usedDate   DateTime?
+  startTime  String?  // Time when TOIL usage starts (HH:MM format)
+  endTime    String?  // Time when TOIL usage ends (HH:MM format)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("toil_entries")
+}
+
+model LeaveBalance {
+  id            String   @id @default(cuid())
+  userId        String
+  leaveTypeId   String
+  currentBalance Float   @default(0)
+  totalEarned   Float    @default(0)
+  totalUsed     Float    @default(0)
+  year          Int
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  // Relations
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  leaveType LeaveType @relation(fields: [leaveTypeId], references: [id])
+
+  @@unique([userId, leaveTypeId, year])
+  @@map("leave_balances")
+}
