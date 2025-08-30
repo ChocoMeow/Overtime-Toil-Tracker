@@ -38,13 +38,6 @@ A comprehensive web application for managing employee overtime, leave requests, 
 -   TOIL balance reports
 -   Admin approval interface
 
-### 🔐 Security
-
--   JWT-based authentication
--   Role-based permissions
--   Secure password hashing
--   CORS protection
-
 ## 🛠️ Tech Stack
 
 ### Frontend
@@ -68,43 +61,17 @@ A comprehensive web application for managing employee overtime, leave requests, 
 -   **JWT** - JSON Web Tokens for authentication
 -   **bcrypt** - Password hashing
 
-## 📁 Project Structure
-
-```
-Overtime-Toil-Tracker/
-├── backend/                 # Backend API server
-│   ├── src/
-│   │   ├── controllers/    # Route controllers
-│   │   ├── middleware/     # Auth & validation middleware
-│   │   ├── routes/         # API routes
-│   │   ├── types/          # TypeScript type definitions
-│   │   ├── utils/          # Utility functions
-│   │   └── index.ts        # Server entry point
-│   ├── prisma/             # Database schema and migrations
-│   └── package.json
-├── frondend/               # Frontend Vue.js application
-│   ├── src/
-│   │   ├── components/     # Vue components
-│   │   ├── views/          # Page components
-│   │   ├── stores/         # Pinia state management
-│   │   ├── api/            # API client
-│   │   ├── router/         # Vue Router configuration
-│   │   └── types/          # TypeScript type definitions
-│   └── package.json
-└── README.md
-```
-
 ## 🚀 Quick Start
 
 ### Prerequisites
 
--   Node.js (v16 or higher)
+-   Node.js (v20 or higher)
 -   npm or yarn package manager
 
 ### 1. Clone the Repository
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/ChocoMeow/Overtime-Toil-Tracker.git
 cd Overtime-Toil-Tracker
 ```
 
