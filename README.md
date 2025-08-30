@@ -2,6 +2,9 @@
 
 A comprehensive web application for managing employee overtime, leave requests, and TOIL (Time Off In Lieu) tracking. Built with Vue.js frontend and Node.js/Express backend with SQLite database.
 
+## 📺 Screenshot
+<img width="1920" height="960" alt="Thumbnail" src="https://github.com/user-attachments/assets/caf9a706-9f2a-4d9e-bb26-e191132efffa" />
+
 ## 🚀 Features
 
 ### 👥 User Management
